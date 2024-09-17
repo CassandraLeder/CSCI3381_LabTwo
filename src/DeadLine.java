@@ -3,13 +3,18 @@
  */
 
 public class DeadLine extends Event implements Completable {
-    boolean complete = false;
+    // status of deadline (whether finished or not)
+    private boolean complete;
 
+    // use default constructor
+    public DeadLine() { this.complete = false; }
+
+    // getters && setters
+    // set complete to true
     public void complete() {
-        complete = true;
+        this.complete = true;
     }
-
     public boolean isComplete() {
-        return complete;
+        return this.complete;
     }
 }

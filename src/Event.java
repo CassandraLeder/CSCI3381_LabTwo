@@ -1,5 +1,3 @@
-import java.util.Date;
-
 /*
     Event class represents a calendar of events.
     The idea is to add and remove dates from this calendar,
@@ -7,9 +5,11 @@ import java.util.Date;
     (not all countries use this calendar system)
  */
 
+import java.util.Date;
+
 public abstract class Event implements Comparable<Event> {
-    String name = "";
-    Date dateTime;
+    private String name;
+    public Date dateTime;
 
     // default constructor
     public Event() {
@@ -24,12 +24,8 @@ public abstract class Event implements Comparable<Event> {
     }
 
     // getters && setters
-    public String getName() {
-        return(this.name);
-    }
-    public Date getDateTime() {
-        return(this.dateTime);
-    }
+    public String getName() { return this.name; }
+    public Date getDateTime() { return this.dateTime; }
 
     public void setName(String name) {
         this.name = name;
@@ -38,7 +34,12 @@ public abstract class Event implements Comparable<Event> {
         this.dateTime = dateTime;
     }
 
-    // implementation of Comparable<T>
+    /*
+                implementation of Comparable<T>
+        returns positive int if e occurs after dateTime
+        returns negative int if e occurs before dateTime
+        returns 0 if the two are equal
+     */
     public int compareTo(Event e) {
         return(e.dateTime.compareTo(this.dateTime));
     }
