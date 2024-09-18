@@ -5,32 +5,32 @@
     (not all countries use this calendar system)
  */
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class Event implements Comparable<Event> {
     private String name;
-    public Date dateTime;
+    public LocalDate dateTime;
 
     // default constructor
     public Event() {
         this.name = "";
-        this.dateTime = new Date();
+        this.dateTime = new LocalDate();
     }
 
     // parameterized/overloaded constructor
-    public Event(String name, Date dateTime) {
+    public Event(String name, LocalDate dateTime) {
         this.name = name;
         this.dateTime = dateTime;
     }
 
     // getters && setters
     public String getName() { return this.name; }
-    public Date getDateTime() { return this.dateTime; }
+    public LocalDate getDateTime() { return this.dateTime; }
 
     public void setName(String name) {
         this.name = name;
     }
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(LocalDate dateTime) {
         this.dateTime = dateTime;
     }
 

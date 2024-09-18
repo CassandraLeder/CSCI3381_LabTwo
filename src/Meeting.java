@@ -2,10 +2,11 @@
     Functionality for adding meetings to calendar.
  */
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Duration;
 
 public class Meeting extends Event implements Completable {
-    private Date endDateTime;
+    private LocalDate endDateTime;
     private String location;
 
     // status of meeting (whether finished or not)
@@ -14,7 +15,7 @@ public class Meeting extends Event implements Completable {
     // constructors
     // default
     public Meeting() {
-        this.endDateTime = new Date();
+        this.endDateTime = new LocalDate(0,0,0);
         this.location = "";
         this.complete = false;
     }
@@ -24,7 +25,7 @@ public class Meeting extends Event implements Completable {
         please note that bool is not included in parameters
         as it would not make sense to schedule a meeting from the past
     */
-    public Meeting(String location, Date endDateTime) {
+    public Meeting(String location, LocalDate endDateTime) {
         this.endDateTime = endDateTime;
         this.location = location;
         this.complete = false;
@@ -37,10 +38,10 @@ public class Meeting extends Event implements Completable {
         this.complete = true;
     }
 
-    public Date getEndTime() {
+    public LocalDate getEndTime() {
         return this.endDateTime;
     }
-    public void setEndTime(Date endDateTime) {
+    public void setEndTime(LocalDate endDateTime) {
         this.endDateTime = endDateTime;
     }
 
@@ -52,12 +53,12 @@ public class Meeting extends Event implements Completable {
     }
 
     // find the total duration of a meeting by subtracting future date from current one
-    public int getDuration() {
+    public Duration getDuration() {
         // get current date
-        Date current_date = new Date();
+        Duration meeting_duration = new Duration();
 
         // subtract end date (should be in the future !) from current date
-        long time = dateTime.getTime() - this.endDateTime.getTime();
-        return (int) time;
+        meeting_duration = dateTime.getTime() - this.endDateTime.getTime();
+        return meeting_duration;
     }
 }
