@@ -51,10 +51,13 @@ public class Meeting extends Event implements Completable {
         this.location = location;
     }
 
-    // this is absolutely incorrect
-    // find the total duration of a meeting
+    // find the total duration of a meeting by subtracting future date from current one
     public int getDuration() {
+        // get current date
+        Date current_date = new Date();
+
+        // subtract end date (should be in the future !) from current date
         long time = dateTime.getTime() - this.endDateTime.getTime();
-        return (0);
+        return (int) time;
     }
 }

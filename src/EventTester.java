@@ -4,7 +4,7 @@
     16/9/24
  */
 
-import java.sql.SQLOutput;
+import java.util.Calendar;
 import java.util.Date;
 
 public class EventTester {
@@ -12,13 +12,17 @@ public class EventTester {
         test_function();
 
     }
-    public static void test_function() {
-        Date date = new Date();
-        date.setTime(15);
 
+    public static void test_function() {
         System.out.println("hi!!! running some tests....");
 
-        // a meeting at the philosophy department for example
+        // a meeting for the philosophy department for example
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, 10);
+        calendar.set(Calendar.DAY_OF_MONTH, 31);
+        calendar.set(Calendar.YEAR, 2024);
+        Date date = calendar.getTime();
+
         Meeting newMeeting = new Meeting("Irby 307", date);
         System.out.println("I have a meeting at " + newMeeting.getLocation() + " for " + newMeeting.getDuration());
 
