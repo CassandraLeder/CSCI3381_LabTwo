@@ -57,7 +57,7 @@ public class EventTester {
     // very simple
     private static void print_date(Meeting meeting) {
         System.out.println("Meeting " + meeting.getName() + " : " +
-                meeting.getStartTime() + "-" + meeting.getEndTime() +
+                meeting.getStartTime() + " - " + meeting.getEndTime() +
                 "\n" + meeting.getLocation());
     }
 
