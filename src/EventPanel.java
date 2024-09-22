@@ -14,6 +14,8 @@ public class EventPanel extends JPanel {
     public EventPanel(ArrayList<Event> events) {
         this.events = events;
         this.completeButton = new JButton("Complete?");
+
+        super.add(completeButton);
     }
 
     // update background colour of EventPanel based on event
