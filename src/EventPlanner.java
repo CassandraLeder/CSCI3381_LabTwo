@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class EventPlanner {
     public static void main(String[] args) { // Why does Java need me to specify args when there is no need for them ???!!!!! ANGER!
         // constants
-        final int X_SIZE = 900;
-        final int Y_SIZE = 900;
+        final int X_SIZE = 1000;
+        final int Y_SIZE = 1000;
 
         System.setProperty("file.encoding", "UTF-8");
 
@@ -45,10 +45,7 @@ public class EventPlanner {
         events.add(lab_two);
 
         // create panel objects and add to frame
-        EventPanel event_panel = new EventPanel(events);
         EventListPanel event_list_panel = new EventListPanel(events);
-        event_list_panel.add(event_panel);
-
         frame.getContentPane().add(event_list_panel);
     }
 }

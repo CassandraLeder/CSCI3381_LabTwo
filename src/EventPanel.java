@@ -11,15 +11,23 @@ import java.util.ArrayList;
 public class EventPanel extends JPanel {
     private final ArrayList<Event> events;
     private JButton completeButton;
-    private final Font std_font = new Font("Helvetica", Font.ITALIC, 20);
+    private final Font std_font = new Font("Times New Roman", Font.PLAIN, 17);
+
+    // members used in paintComponent
+    int lambda = 0; // this serves as a multiplier for spacing in paintComponent()
+    final int X_DIM = 10;
+    final int Y_DIM = 70;
+    final int SPACING = 100;
 
     public EventPanel(ArrayList<Event> events) {
         // set up panel
-        final Dimension STD_DIM = new Dimension(500, 500);
-        final Point LOCATION = new Point(10, 300);
+        final Dimension PANEL_DIM = new Dimension(900, 500);
+        final Point PANEL_LOCATION = new Point(130, 100);
+        final Point BUTTON_LOCATION = new Point(0,0); // (0,0) relative to panel
 
-        setLocation(LOCATION);
-        setPreferredSize(STD_DIM);
+        setLocation(PANEL_LOCATION);
+        setPreferredSize(PANEL_DIM);
+        setBackground(Color.BLACK);
 
         // populate events
         this.events = events;
@@ -27,6 +35,7 @@ public class EventPanel extends JPanel {
         // create button and add to panel
         this.completeButton = new JButton("Complete?");
         this.completeButton.setFont(std_font);
+        this.completeButton.setLocation(BUTTON_LOCATION);
         super.add(completeButton);
 
         // completeButton's action_listener
@@ -79,64 +88,88 @@ public class EventPanel extends JPanel {
 
     // this method will write out the details of an event to the dialog box
     public void paintComponent(Graphics g) {
-        // constants
-        final int X_DIM = 10;
-        final int Y_DIM = 200;
-        final int SPACING = 100;
-        int i = 0;
+        int curr_x = this.X_DIM; // represents x point at any given time (always equal to X_DIM)
+        int curr_y = this.Y_DIM; // '      '   y '                   '
 
         super.paintComponent(g);
         g.setFont(std_font);
 
         for (Event event : this.events) {
-            // if our event is meeting, output the details
+            // if our event is a meeting, output the details
             if (event.getClass().isInstance(event) && event.toString().contains("Meeting")) {
                 Meeting meeting = (Meeting) event;
 
-                // output meeting name
-                g.drawString("Meeting: " + meeting.getName(), (X_DIM + (SPACING * i)), Y_DIM);
+                // create an output string
+                StringBuilder meeting_output = new StringBuilder();
 
-                ++i; // there must be a better way...
+                // add meeting name
+                meeting_output.append("Meeting: ").append(meeting.getName());
 
-                // output meeting time
-                String time = ", " + meeting.getStartTime().getHour() + ":" + meeting.getStartTime().getMinute() + " - "
-                        + meeting.getEndTime().getHour() + ":" + meeting.getEndTime().getMinute();
-                g.drawString(time, (X_DIM + (SPACING * i)), Y_DIM);
+                // avoid displaying "0" if the minutes are "00"
+                String start_minute = "";
+                String end_minute = "";
 
-                ++i;
+                if (meeting.getStartTime().getMinute() == 0) {
+                    start_minute = "00";
+                }
+                else {
+                    start_minute = meeting.getStartTime().getMinute() + "";
+                }
+                if (meeting.getEndTime().getMinute() == 0) {
+                    end_minute = "00";
+                }
+                else {
+                    end_minute = meeting.getEndTime().getMinute() + "";
+                }
 
-                // output meeting location
-                g.drawString(", " + meeting.getLocation(), (X_DIM + (SPACING * i)), Y_DIM);
+                // add start and end times
+                meeting_output.append(meeting.getStartTime().getHour()).append(":").append(start_minute);
+                meeting_output.append(" - ").append(meeting.getEndTime().getHour()).append(":").append(end_minute);
 
-                ++i;
+                // add meeting location
+                meeting_output.append(" at ").append(meeting.getLocation());
+                // add meeting duration
+                meeting_output.append(" total duration: ").append(meeting.getDuration());
+                // add completion status
+                meeting_output.append(" completion status: ").append(meeting.isComplete());
 
-                // output meeting duration
-                g.drawString(", total duration: " + meeting.getDuration(), (X_DIM + (SPACING * i)), Y_DIM);
-
-                ++i;
-
-                // output completion status
-                g.drawString(", completion status: " + meeting.isComplete(), (X_DIM + (SPACING * i)), Y_DIM);
-
+                // finally, draw it
+                g.drawString(meeting_output.toString(), curr_x, curr_y);
             }
             // if our event is a deadline, output its details
             else if (event.getClass().isInstance(event) && event.toString().contains("DeadLine")) {
+
                 DeadLine deadline = (DeadLine) event;
 
-                g.drawString("Deadline: " + deadline.getName(), (X_DIM + (SPACING * i)), (Y_DIM + (SPACING * i)));
+                // create new deadline_output string
+                StringBuilder deadline_output = new StringBuilder();
 
-                ++i;
+                // add name
+                deadline_output.append("Deadline: ").append(deadline.getName());
 
-                g.drawString(", due at " + deadline.getDeadline().getHour() + ":" + deadline.getDeadline().getMinute(),
-                        (X_DIM + (SPACING * i)), (Y_DIM + (SPACING * i)));
+                // avoid having minute only display 0 instead of 00
+                String hour = deadline.getDeadline().getHour() + "";
+                String minute = "";
 
-                ++i;
+                if (deadline.getDeadline().getMinute() == 0) {
+                    minute = "00";
+                }
+                else {
+                    minute = deadline.getDeadline().getMinute() + "";
+                }
 
-                g.drawString(", completion status: " + deadline.isComplete(), (X_DIM + (SPACING * i)), (Y_DIM + (SPACING * i)));
+                // add time due
+                deadline_output.append(" due at ").append(hour).append(":").append(minute);
+                // add completion status
+                deadline_output.append(" completion status: ").append(deadline.isComplete());
 
+                // draw at X_DIM so the events are lined up
+                g.drawString(deadline_output.toString(), curr_x, curr_y);
             }
 
-            ++i;
+            // update current x, y for next iteration
+            this.lambda = 0;
+            curr_y += (this.SPACING / 2);
         }
     }
 }

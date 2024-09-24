@@ -19,7 +19,8 @@ public class EventListPanel extends JPanel {
     private JButton addEventButton;
 
     // strings
-    private final String[] sort_options = {"Ascending", "Descending"};
+    private final String[] sort_options_en = {"Ascending", "Descending"};
+    private final String [] sort_option_zh = {"", ""};
     private final String[] en_text = {"filter on/off", "English", "Add Event"};
     private final String[] zh_text = {"过滤器", "中文", "天加事件"};
     private final Font std_font = new Font("Comic Sans MS", Font.BOLD, 20);
@@ -28,10 +29,8 @@ public class EventListPanel extends JPanel {
     // constructor where everything happens
     public EventListPanel(ArrayList<Event> events) {
         // constants
-        final Dimension EVENT_DIM = new Dimension(300, 300);
-        final Point EVENT_LOCATION = new Point(100,100);
         final Dimension CONTROL_DIM = new Dimension(200, 100);
-        final Point CONTROL_LOCATION = new Point(0,0);
+        final Point CONTROL_LOCATION = new Point(10,300);
 
         // create objects
         this.events = events;
@@ -40,11 +39,10 @@ public class EventListPanel extends JPanel {
         controlPanel.setPreferredSize(CONTROL_DIM);
         controlPanel.setLocation(CONTROL_LOCATION);
 
-        displayPanel = new JPanel();
-        displayPanel.setPreferredSize(EVENT_DIM);
-        displayPanel.setLocation(EVENT_LOCATION);
+        // the constructor within displayPanel will take care of configuration so this is ok...
+        displayPanel = new EventPanel(this.events);
 
-        setDropDown = new JComboBox(sort_options);
+        setDropDown = new JComboBox(sort_options_en);
         setDropDown.setFont(std_font);
 
         filterDisplay = new JCheckBox(en_text[0]);
@@ -61,10 +59,11 @@ public class EventListPanel extends JPanel {
         controlPanel.add(setDropDown);
         controlPanel.add(filterDisplay);
         controlPanel.add(language);
-        displayPanel.add(controlPanel);
 
-        // add display panel to super panel
+        // add display/control panel to super panel
+        super.add(controlPanel);
         super.add(displayPanel);
+        // super.setLocation(CONTROL_LOCATION);
 
         // action listeners
         addEventButton.addActionListener(e -> {
@@ -87,6 +86,7 @@ public class EventListPanel extends JPanel {
                 filterDisplay.setFont(zh_font);
                 addEventButton.setText(zh_text[2]);
                 addEventButton.setFont(zh_font);
+                setDropDown = new JComboBox(sort_option_zh);
             }
             // if english is selected
             else {
@@ -94,6 +94,7 @@ public class EventListPanel extends JPanel {
                 filterDisplay.setFont(std_font);
                 addEventButton.setText(en_text[2]);
                 addEventButton.setFont(std_font);
+                setDropDown = new JComboBox(sort_options_en);
             }
         });
     }
