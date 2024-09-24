@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class EventListPanel extends JPanel {
     private ArrayList<Event> events;
+
+    // Swing objects
     private JPanel controlPanel; // controls for event display
     private JPanel displayPanel; // EventListPanel's panel
 
@@ -16,6 +18,7 @@ public class EventListPanel extends JPanel {
     private JCheckBox language;
     private JButton addEventButton;
 
+    // strings
     private final String[] sort_options = {"Ascending", "Descending"};
     private final String[] en_text = {"filter on/off", "English", "Add Event"};
     private final String[] zh_text = {"过滤器", "中文", "天加事件"};
@@ -25,13 +28,22 @@ public class EventListPanel extends JPanel {
     // constructor where everything happens
     public EventListPanel(ArrayList<Event> events) {
         // constants
-        final int X_SIZE = 500;
-        final int Y_SIZE = 500;
+        final Dimension EVENT_DIM = new Dimension(300, 300);
+        final Point EVENT_LOCATION = new Point(100,100);
+        final Dimension CONTROL_DIM = new Dimension(200, 100);
+        final Point CONTROL_LOCATION = new Point(0,0);
 
-        setPreferredSize(new Dimension(X_SIZE, Y_SIZE));
+        // create objects
         this.events = events;
+
         controlPanel = new JPanel();
+        controlPanel.setPreferredSize(CONTROL_DIM);
+        controlPanel.setLocation(CONTROL_LOCATION);
+
         displayPanel = new JPanel();
+        displayPanel.setPreferredSize(EVENT_DIM);
+        displayPanel.setLocation(EVENT_LOCATION);
+
         setDropDown = new JComboBox(sort_options);
         setDropDown.setFont(std_font);
 
@@ -56,13 +68,16 @@ public class EventListPanel extends JPanel {
 
         // action listeners
         addEventButton.addActionListener(e -> {
-            JDialog dialog;
+            ArrayList<JDialog> modals = new ArrayList<>();
+            EventPanel event_panel = new EventPanel(events);
 
             for (Event event : this.events) {
-                System.out.println(event.getName());
-                dialog = new AddEventModal(event);
+                modals.add(new AddEventModal(event));
+
+                // call paintComponent()
+                event_panel.revalidate();
+                event_panel.repaint();
             }
-            // super.add(displayPanel);
         });
 
         language.addActionListener(e -> {

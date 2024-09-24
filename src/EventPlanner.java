@@ -31,11 +31,12 @@ public class EventPlanner {
 
     // creates default events to test GUI
     public static void addDefaultEvents(JFrame frame) {
+        // example meeting
         LocalDateTime start_date = LocalDateTime.of(2024, 10, 31, 12, 0);
         LocalDateTime end_date = LocalDateTime.of(2024, 10, 31, 12, 50);
-
         Meeting meeting = new Meeting("Spooky Philosophy Class", start_date, end_date, "Irby 307");
 
+        // example deadline
         LocalDateTime lab_deadline = LocalDateTime.of(2024, 9, 25, 23, 59);
         DeadLine lab_two = new DeadLine("Lab 2", lab_deadline);
 
@@ -43,10 +44,11 @@ public class EventPlanner {
         events.add(meeting);
         events.add(lab_two);
 
+        // create panel objects and add to frame
         EventPanel event_panel = new EventPanel(events);
         EventListPanel event_list_panel = new EventListPanel(events);
+        event_list_panel.add(event_panel);
 
-        frame.getContentPane().add(event_panel);
         frame.getContentPane().add(event_list_panel);
     }
 }
