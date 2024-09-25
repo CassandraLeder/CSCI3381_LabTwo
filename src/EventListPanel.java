@@ -2,13 +2,10 @@
     This panel contains the functionality to add events to the user's calendar
 */
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -69,8 +66,7 @@ public class EventListPanel extends JPanel {
             checkBox.addItemListener(new ItemListener() {
                 @Override
                 public void itemStateChanged(ItemEvent e) {
-
-                    filterOut(e.getStateChange());
+                    filterOut();
                 }
             });
             filterDisplay.add(checkBox);
@@ -197,42 +193,47 @@ public class EventListPanel extends JPanel {
         1 = '       '  meetings
         2 = '       '  deadlines
      */
-    private void filterOut(int state) {
-        int filter_i = state;
+    private void filterOut() {
+        int filter_i = 0;
         int event_i = 0;
 
         // ok, this is a terrible, horrible, horrific way to implement this,
         // but, in my defense, I was 'eepy!
-        for (Event event : events) {
-            if (filter_i == 0) {
-                if (event instanceof Meeting) {
-                    Meeting meeting = (Meeting) event;
-                    if (meeting.isComplete()) {
-                        displayPanel.remove(event_i); // with this method, there needs to be a graveyard of fallen events
+            for (JCheckBox checkBox : filterDisplay) {
+                for (Event event : events) {
+                // check if meeting or deadline is completed and remove
+                if (checkBox.isSelected() && filter_i == 0) {
+                    if (event instanceof Meeting) {
+                        Meeting meeting = (Meeting) event;
+                        if (meeting.isComplete()) {
+                            displayPanel.remove(event_i); // needs graveyard implementation to make filtered items reappear
+                        }
+                    } else if (event instanceof DeadLine) {
+                        DeadLine deadline = (DeadLine) event;
+                        if (deadline.isComplete()) {
+                            displayPanel.remove(event_i);
+                        }
                     }
                 }
-                else if (event instanceof DeadLine) {
-                    DeadLine deadline = (DeadLine) event;
-                    if (deadline.isComplete())
-                    {
-                        displayPanel.remove(event_i);
-                    }
-                }
-            }
-            else if (filter_i == 1) {
-                if (event instanceof DeadLine)
-                {
+
+            // if removing meetings
+            else if (checkBox.isSelected() && filter_i == 1) {
+                if (event instanceof DeadLine) {
                     displayPanel.remove(event_i);
                 }
             }
-            else if (filter_i == 2) {
-                if (event instanceof Meeting)
-                {
+
+            // if removing deadlines
+            else if (checkBox.isSelected() && filter_i == 2) {
+                if (event instanceof DeadLine) {
                     displayPanel.remove(event_i);
                 }
             }
-            event_i++;
+            ++event_i;
         }
+        event_i = 0;
+        ++filter_i;
+    }
         displayPanel.revalidate();
         displayPanel.repaint();
     }
