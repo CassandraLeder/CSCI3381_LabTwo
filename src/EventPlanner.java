@@ -14,6 +14,7 @@ public class EventPlanner {
         final int Y_SIZE = 1000;
         final Color PERIWINKLE = new Color(142, 130, 254);
 
+        // this is for the Mandarin language support I, somewhat, precariously added
         System.setProperty("file.encoding", "UTF-8");
 
         // create jframe
@@ -25,10 +26,12 @@ public class EventPlanner {
         // creates objects of implemented classes
         addDefaultEvents(frame);
 
+        // add uca logo hahahha
+
         // add to jframe
-        frame.pack();
         frame.setBackground(PERIWINKLE);
         frame.setVisible(true);
+        // frame.pack(); // not good for add events button
     }
 
     // creates default events to test GUI
@@ -48,6 +51,7 @@ public class EventPlanner {
 
         // create panel objects and add to frame
         EventListPanel event_list_panel = new EventListPanel(events);
+
         frame.getContentPane().add(event_list_panel);
     }
 }
