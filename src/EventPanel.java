@@ -11,7 +11,8 @@ import java.util.ArrayList;
 public class EventPanel extends JPanel {
     private final ArrayList<Event> events;
     private JButton completeButton;
-    private final Font std_font = new Font("Times New Roman", Font.PLAIN, 17);
+    private final Font STD_FONT = new Font("Times New Roman", Font.BOLD, 20);
+    private final Color PERIWINKLE = new Color(142, 130, 254);
 
     // members used in paintComponent
     int lambda = 0; // this serves as a multiplier for spacing in paintComponent()
@@ -21,20 +22,22 @@ public class EventPanel extends JPanel {
 
     public EventPanel(ArrayList<Event> events) {
         // set up panel
-        final Dimension PANEL_DIM = new Dimension(900, 500);
+        final Dimension PANEL_DIM = new Dimension(1100, 500);
         final Point PANEL_LOCATION = new Point(130, 100);
         final Point BUTTON_LOCATION = new Point(0,0); // (0,0) relative to panel
 
         setLocation(PANEL_LOCATION);
         setPreferredSize(PANEL_DIM);
-        setBackground(Color.BLACK);
+        // for testing purposes
+        // setBackground(Color.BLACK);
+        setBackground(PERIWINKLE);
 
         // populate events
         this.events = events;
 
         // create button and add to panel
         this.completeButton = new JButton("Complete?");
-        this.completeButton.setFont(std_font);
+        this.completeButton.setFont(STD_FONT);
         this.completeButton.setLocation(BUTTON_LOCATION);
         super.add(completeButton);
 
@@ -84,6 +87,9 @@ public class EventPanel extends JPanel {
                 super.setBackground(Color.YELLOW);
             }
         }
+
+        super.revalidate();
+        super.repaint();
     }
 
     // this method will write out the details of an event to the dialog box
@@ -92,7 +98,7 @@ public class EventPanel extends JPanel {
         int curr_y = this.Y_DIM; // '      '   y '                   '
 
         super.paintComponent(g);
-        g.setFont(std_font);
+        g.setFont(STD_FONT);
 
         for (Event event : this.events) {
             // if our event is a meeting, output the details
@@ -103,7 +109,7 @@ public class EventPanel extends JPanel {
                 StringBuilder meeting_output = new StringBuilder();
 
                 // add meeting name
-                meeting_output.append("Meeting: ").append(meeting.getName());
+                meeting_output.append("Meeting: ").append(meeting.getName()).append(" ");
 
                 // avoid displaying "0" if the minutes are "00"
                 String start_minute = "";
@@ -129,7 +135,8 @@ public class EventPanel extends JPanel {
                 // add meeting location
                 meeting_output.append(" at ").append(meeting.getLocation());
                 // add meeting duration
-                meeting_output.append(" total duration: ").append(meeting.getDuration());
+                meeting_output.append(" total duration: ").append(meeting.getDuration().toHours()).append(" hours and ")
+                        .append(meeting.getDuration().toMinutes()).append(" minutes");
                 // add completion status
                 meeting_output.append(" completion status: ").append(meeting.isComplete());
 

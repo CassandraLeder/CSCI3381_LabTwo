@@ -3,6 +3,7 @@
  */
 
 import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ public class EventPlanner {
         // constants
         final int X_SIZE = 1000;
         final int Y_SIZE = 1000;
+        final Color PERIWINKLE = new Color(142, 130, 254);
 
         System.setProperty("file.encoding", "UTF-8");
 
@@ -19,13 +21,13 @@ public class EventPlanner {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(X_SIZE, Y_SIZE);
 
-        /* // create objects of implemented classes
-        EventPlanner eventPlanner = new EventPlanner();
-        EventListPanel panel = new EventListPanel(); */
 
+        // creates objects of implemented classes
         addDefaultEvents(frame);
+
         // add to jframe
         frame.pack();
+        frame.setBackground(PERIWINKLE);
         frame.setVisible(true);
     }
 
